@@ -1,0 +1,8 @@
+---
+cassandra_config:
+  host: 127.0.0.1
+  keyspace: demo
+rabbit_config:
+  host: localhost
+  queueName: task_queue
+...

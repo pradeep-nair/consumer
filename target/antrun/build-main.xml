@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <mkdir dir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer"/>
+  <copy todir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer">
+    <fileset includes="config.yml" dir="src/main/resources/conf"/>
+  </copy>
+  <copy todir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer">
+    <fileset includes="consumer.jar" dir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target"/>
+  </copy>
+  <zip destfile="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer-1.0.zip">
+    <zipfileset prefix="Consumer/" filemode="755" dir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer"/>
+  </zip>
+  <delete dir="/Users/pradeep.nair/repos/appdynamics/extensions/consumer/target/Consumer"/>
+</target>
+</project>
