@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Consumer {
-    
+
     /**
      * This method loads the config YAML file
      *
@@ -54,7 +54,6 @@ public class Consumer {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
-                // String message = new String(body, "UTF-8");
                 System.out.println(" [x] Received '");
                 List<List<String>> result = (List<List<String>>) deserialize(body);
                 for (List<String> s: result) {
