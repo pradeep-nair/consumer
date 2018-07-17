@@ -1,9 +1,10 @@
 package com.appdynamics.consumer;
 
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import com.rabbitmq.client.*;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -54,11 +55,11 @@ public class Consumer {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
-                System.out.println(" [x] Received '");
+                //System.out.println(" [x] Received '");
                 List<List<String>> result = (List<List<String>>) deserialize(body);
-                for (List<String> s: result) {
-                    System.out.println(s);
-                }
+//                for (List<String> s: result) {
+//                    System.out.println(s);
+//                }
                 pushToCassandra(chost, keyspace, result);
             }
         };
@@ -66,6 +67,11 @@ public class Consumer {
     }
 
     private static void pushToCassandra(String host, String keyspace, List<List<String>> result) {
+//        LoggerContext loggerContext = (LoggerContext)LoggerFactory.getILoggerFactory();
+//        Logger rootLogger = loggerContext.getLogger("com.datastax.driver.core.Connection");
+//        rootLogger.setLevel(Level.WARN);
+        LogManager.getRootLogger().setLevel(Level.WARN);
+        LogManager.getLogger("com.datastax.driver.core.Cluster").setLevel(Level.WARN);
         Cluster cluster = Cluster.builder().addContactPoint(host).build();
         Session session = cluster.connect(keyspace);
         for (List<String> row: result) {
@@ -98,8 +104,7 @@ public class Consumer {
 
     public static void main(String[] argv) throws Exception {
         // load config yaml
-        Map<String, Map<String, ?>> config = load("/Users/pradeep.nair/repos/appdynamics/" +
-                "extensions/consumer/src/main/resources/conf/config.yml");
+        Map<String, Map<String, ?>> config = load("./config.yml");
         // get postgres connection properties
         Map<String, ?> rabbitProps = config.get("rabbit_config");
         String rhost = (String) rabbitProps.get("host");
